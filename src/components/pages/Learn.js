@@ -45,6 +45,7 @@ function Learn() {
 		}
 		return libraryTmp;
 	}
+	
 	function reLoad() {
 		// window.location.reload();
 		let libraryTmp = [];

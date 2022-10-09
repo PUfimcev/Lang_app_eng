@@ -33,7 +33,7 @@ function Game() {
 
 				switch(number) {
 					case 1: setContent(<Game1 />); break;
-					case 2: setContent(<Game2 />); break;
+					case 2: setContent(<Game2 library={library}/>); break;
 					default: setContent('Game not found');
 				}
 			}
