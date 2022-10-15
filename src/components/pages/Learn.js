@@ -10,13 +10,17 @@ function Learn() {
 	const [library1, setlibrary1] = useState([]);
 	
 	useEffect(() => {
-		if (!library1 || library1.length === 0) {
-			const shuffledLibrary = shuffleLibrary();
-			setlibrary1([...shuffledLibrary]);
+		let shuffleLibraryTmp = shuffleLibrary();
+		
+		if (library1.length === 0 && shuffleLibraryTmp.length !== 0) {
+			setlibrary1([...shuffleLibraryTmp]);
 		}
+		// }
+		if (library[currentIndex]) setCurrentWord(library[currentIndex]);
 
 		if (library1[currentIndex]) setCurrentWord(library1[currentIndex]);
-	}, [library1, currentIndex]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps		
+	}, [library1, currentIndex, library]);
 	
 	function next() {
 		let currentIndexTmp = currentIndex;

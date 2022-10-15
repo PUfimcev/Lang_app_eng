@@ -1,19 +1,61 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './style.css';
-import { MainContext } from "../../Main";
 
-
-function Game2() {
+function Game2(props) {
 	let inputRef = useRef();
+	const [library, setLibrary] = useState([]);
 	const [currentWord, setCurrentWord] = useState({});
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const {library, points} = useContext(MainContext);
+	const [inputWord, setInputWord] = useState('');
 	
+	const {shuffleLibrary, addCorrect, addError} = props.methods;
+	
+	useEffect(() => {
+		const libraryTmp = shuffleLibrary();
+
+		if (libraryTmp && libraryTmp.length > 0) {
+			if (library && library.length === 0) {
+				setLibrary([...libraryTmp]);
+			}
+		}
+
+		if (library && library.length > 0) setCurrentWord(library[currentIndex].translate);	
+		// eslint-disable-next-line react-hooks/exhaustive-deps	
+	});
 
 	useEffect(() => {
 		
 		if (library[currentIndex]) setCurrentWord(library[currentIndex]);
-	}, [currentWord, currentIndex])
+		// eslint-disable-next-line react-hooks/exhaustive-deps	
+	}, [library, currentWord, currentIndex]);
+
+	useEffect(() => {
+		let inputElem = inputRef.current;
+		if(!inputElem) return;
+		let resultInfo = document.querySelector('.game__2__result');
+		if (!resultInfo) return;
+
+		if (check() === true) {
+			addCorrect();
+			resultInfo.innerHTML = 'Well done!';
+			resultInfo.style.color = 'green';
+			inputElem.value = '';
+			setTimeout(() => {
+				nextWord();
+				resultInfo.innerHTML = '';
+			}, 2000);
+		}
+		if (check() === false) {
+			addError();
+			resultInfo.innerHTML = 'Try again next time!'
+			resultInfo.style.color = 'red';
+			setTimeout(() => {
+				nextWord();
+				resultInfo.innerHTML = '';
+			}, 2000);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps		
+	}, [inputWord]);
 
 	function nextWord() {
 
@@ -30,26 +72,20 @@ function Game2() {
 		}
 	}
 
-	function check(){
+	function getWord() {
 		let inputElem = inputRef.current;
 		if(!inputElem) return;
 		let word = inputElem.value;
 		if (!word) return;
-		let resultInfo = document.querySelector('.game__2__result');
-		if (!resultInfo) return;
+		setInputWord(word);
+	}
 
-		if (word === currentWord.word) {
-			resultInfo.innerHTML = 'Well done!';
-			resultInfo.style.color = 'green';
-			inputElem.value = '';
-			setTimeout(() => {
-				nextWord();
-				resultInfo.innerHTML = '';
-		}, 2000);
-		} else {
-			resultInfo.innerHTML = 'Try again!'
-			resultInfo.style.color = 'red';
-		}
+	function check(){
+		getWord();
+		if (!inputWord  || inputWord.length === 0) return;
+
+		if (inputWord === currentWord.word) return true;
+		return false;
 	}
 
 	return (
@@ -74,7 +110,7 @@ function Game2() {
 						<button onClick={check}>ok</button>
 					</div>
 
-				</div>
+			</div>
 		</div>
 	);
 }

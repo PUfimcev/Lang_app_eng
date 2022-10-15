@@ -1,47 +1,59 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-
-import Game1 from '../games/game1/index';
-import Game2 from '../games/game2/index';
-
 import { MainContext } from "../Main";
+
+import Game1 from "../games/game1";
+import Game2 from "../games/game2";
+import Game3 from "../games/game3";
+
+const libraryComponents = [Game1, Game2, Game3];
 
 function Game() {
 	
 	// Создаем общие элементы и действия для всех игр
 
-	const {library, libraryGames, points} = useContext(MainContext);
+	const params = useParams(); // номер подпути, выраженный после : (это в path="/games/:number/ в Main)
+	const number = +params.number;
 
-	const [name, setName] = useState(null);
-	const [content, setContent] = useState(null);
+	const Component = libraryComponents[number - 1] || null;
+
+	const {library, libraryGames, points, setPoints} = useContext(MainContext);
 	
 	const [errors, setErrors] = useState(0);
 	const [correct, setCorrect] = useState(0);
+	const [currentWord, setCurrentWord] = useState('');
+	const [currentIndex, setCurrentIndex] = useState(0);
 
-	const params = useParams(); // номер подпути, выраженный : - это в path="/games/:number/ в Main
-	
+	const name = libraryGames[number - 1].name || '';
 
 	useEffect(() => {
+		if (library[currentIndex]) setCurrentWord(library[currentIndex].translate);
 
-		if (!content) {
-			const number = (params && params.number) ? +params.number : null;
+		// eslint-disable-next-line react-hooks/exhaustive-deps		
+	}, [currentIndex]);
+	
+	function addError() {
+		let count = errors;
+		count++;
 
-			if (!isNaN(number)) {
-				const gameName = libraryGames[number-1].name;
-				if (gameName) setName(gameName);	
-
-				switch(number) {
-					case 1: setContent(<Game1 />); break;
-					case 2: setContent(<Game2 library={library}/>); break;
-					default: setContent('Game not found');
-				}
-			}
+		setErrors(count);
 	}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [content]);
+
+	function addCorrect() {
+		let count = correct;
+		count++;
+
+		let countPoints = points;
+		countPoints++;
+
+		setCorrect(count);
+		setPoints(countPoints);
+	}
 
 	function shuffleLibrary() {
+
+		if (!library) return;
 		let libraryTmp = [];
 
 		while(true) {
@@ -52,13 +64,13 @@ function Game() {
 
 			if (!libraryTmp.includes(word)) libraryTmp.push(word);
 		}
-
-		
 		return libraryTmp;
+		
 	}
 
 	return (
 		<div className="page">
+			<div className="learn__progressbar"><span style={{width: (library.length > 0 ? ((currentIndex+1)*100)/library.length : 0) + '%'}}></span></div>
 			<div className="game">
 				<div className="game__header">
 					<Link to="/games/"></Link>
@@ -69,8 +81,8 @@ function Game() {
 					</div>
 				</div>
 				<div className="game__content">
-					<h3>{name}</h3>
-					{content}
+				{name && <h3>{name}</h3>}
+					{!Component ? <>Game not found</> : <Component data={{currentIndex, currentWord}} methods={{shuffleLibrary, addCorrect, addError, setCurrentIndex, setCurrentWord}} />}
 				</div>
 			</div>
         </div>

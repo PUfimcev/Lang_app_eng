@@ -14,7 +14,7 @@ function Main() {
 	const libraryGames = [
 		{ name: 'Speak and check', description: 'Say the word on the screen and check your spelling' },
 		{ name: 'Write the translation', description: 'Say the word on the screen and check your spelling' },
-		{ name: 'Remember translation', description: 'Say the word on the screen and check your spelling' }
+		{ name: 'Check it', description: 'Say the word on the screen and check your spelling' }
 		
 	];
 
@@ -27,12 +27,19 @@ function Main() {
 
 			if (libraryLocal && libraryLocal.length > 0) {
 				setLibrary([...libraryLocal]);
+				setPoints(getStoragePoints());
 			}
 		} else {
 			setStorage();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [library]);
+	});
+
+	// Под вопросом, может отслеживать в верхнем useEffect?
+	useEffect(() => {
+		setStorage();
+		// eslint-disable-next-line react-hooks/exhaustive-deps		
+	}, [points]);
 
 	function setStorage() {
 		let libraryTmp = library;
@@ -40,6 +47,7 @@ function Main() {
 
 		if (!libraryTmp) return;
 		localStorage.setItem('library', libraryTmp);
+		localStorage.setItem('points', points);
 	}
 
 	function getStorage() {
@@ -52,6 +60,15 @@ function Main() {
 
 		return libraryTmp;
 	}
+
+	function getStoragePoints() {
+		let points = localStorage.getItem('points');
+		
+		if (isNaN(points)) return;
+
+		return points;
+	}
+
 
 	return (
 		<main className="main">

@@ -145,21 +145,20 @@ body {
 
 .library__row.body {
     max-height: 200px;
+    overflow: hidden;
     overflow-y: auto;
 }
 
 .library__col {
-    flex: 1 1;
     font-size: 22px;
 }
 
 .library__item {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     position: relative;
     padding: 10px 60px;
-    gap: 30px;
 }
 
 
@@ -172,15 +171,20 @@ body {
 }
 
 .library__item .library__col{
+    width: 45%;
     font-size: 18px;
+    text-align: left;
+    word-wrap: break-word;
 }
 
 .library__item .library__col:first-child {
     padding-left: 10px;
+    width: 35%;
 }
 
 
 .library__item .library__col:nth-child(3) {
+    width: 20%;
     text-align: center;
 }
 

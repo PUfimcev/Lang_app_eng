@@ -1,31 +1,39 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect } from "react";
 import { MainContext } from "../Main";
 
 function Library() {
 
 	const {library, setLibrary} = useContext(MainContext);
-	
 	const inputRef = useRef();
+	const libraryListRef = useRef();
+	
+	useEffect(() => {
+		const libraryListElem = libraryListRef.current;
+		libraryListElem.scrollTop = libraryListElem.scrollHeight;
+		// console.dir(libraryListElem);
+		
+	}, [library]);
 
 	function add(){
 		let inputElem = inputRef.current;
 		if (!inputElem) return;
 		const word = inputElem.value;
-
+		
 		if (!word) return;
-
+		
 		inputElem.value = '';
-
+		
 		if (checkDublicate(word)) return;
-
+		
 		fetch(`https://tmp.myitschool.org/API/translate/?word=${word}&source=ru&target=en`)
 		.then(response => response.json())
 		.then(result => {
 			const libraryTmp = library;
 			libraryTmp.push({word: word, translate: result.translate, learn: 0})
-
+			
 			setLibrary([...libraryTmp]);
 		});
+
 	}
 
 	function checkDublicate(word){
@@ -45,15 +53,11 @@ function Library() {
 		// clearStorage();
 
 	}
-
-	// function clearStorage() {
-	// 	localStorage.removeItem('library');
-	// }
-
+	
 	function get(){
 		return library.map((item, index) => {
 			return (
-				<div key={index} className="library__item">
+				<div key={index} className={`library__item ${index}`} >
 					<div className="library__col">{item.word}</div>
 					<div className="library__col">{item.translate}</div>
 					<div className="library__col">{item.learn}%</div>
@@ -61,7 +65,6 @@ function Library() {
 				</div>
 			);
 		});
-	
 	}
 
 	return (
@@ -80,7 +83,7 @@ function Library() {
 						<div className="library__col">Translation</div>
 						<div className="library__col">Learn</div>
 					</div>
-					<div className="library__row body">{get()}</div>
+					<div ref={libraryListRef} className="library__row body" >{get()}</div>
 				</div>
 			</div>
 		</div>
