@@ -7,14 +7,16 @@ function Nav() {
         
         let pathBrows = window.location.pathname.split(/\/*\//)[1];
         let linkPage = null;
+        console.log(pathBrows);
+
 
         if (!linkPage) {
-            if (pathBrows === '') {
+            if (pathBrows === '' || pathBrows === 'Lang_app_eng') {
                 linkPage = document.querySelector(`nav a[href="/"]`);
                 linkPage.classList.add('active');
             } else {
                 linkPage = document.querySelector(`nav a[href="/${pathBrows}/"]`);
-                // linkPage.classList.add('active');
+                linkPage.classList.add('active');
             }
         }
     });
