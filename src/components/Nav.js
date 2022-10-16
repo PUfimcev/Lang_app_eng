@@ -14,7 +14,7 @@ function Nav() {
                 linkPage.classList.add('active');
             } else {
                 linkPage = document.querySelector(`nav a[href="/${pathBrows}/"]`);
-                linkPage.classList.add('active');
+                // linkPage.classList.add('active');
             }
         }
     });
