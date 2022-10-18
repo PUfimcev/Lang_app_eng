@@ -69,7 +69,6 @@ function Main() {
 		return points;
 	}
 
-
 	return (
 		<main className="main">
 			<div className="container">
@@ -86,5 +85,4 @@ function Main() {
 		</main>
 	);
 }
-
 export default Main;

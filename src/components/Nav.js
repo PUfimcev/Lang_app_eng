@@ -2,13 +2,9 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Nav() {
-    
     useEffect(() => {
-        
         let pathBrows = window.location.pathname.split(/\/*\//)[1];
         let linkPage = null;
-        console.log(pathBrows);
-
 
         if (!linkPage) {
             if (pathBrows === '' || pathBrows === 'Lang_app_eng') {

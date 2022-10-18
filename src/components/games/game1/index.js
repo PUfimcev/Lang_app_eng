@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './style.css';
+import Circle from '../../../images/Ellipse_right.png';
 
 function Game1(props) {
 	const {shuffleLibrary, addCorrect, addError, setCurrentIndex, setCurrentWord} = props.methods;
@@ -22,14 +23,10 @@ function Game1(props) {
 	});
 
 	useEffect(() => {
-		let resultInfo = document.querySelector('.game__1__body-word');
 
-		if (!resultInfo) return;
-		console.log(resultInfo)
 
 		if (check() === true) {
 			setVoiceWord('');
-			resultInfo.style.backgroundImage = 'url(../../../images/Ellipse_right.png)';
 			addCorrect();
 			next();
 		}
@@ -94,7 +91,7 @@ function Game1(props) {
 					{library.length > 0 &&
 						<> 
 							<h2>{currentWord}</h2>
-							<div>{voiceWord && <div className='game__1__body-word' style={{color: 'red', fontSize: '20px'}}>{voiceWord}</div>}</div>
+							<div>{voiceWord && <div className='game__1__body-word' style={{color: 'red', fontSize: '20px' }}>{voiceWord}</div>}</div>
 							<button className='game__1__body bnt_1' onClick={voice}></button>
 							<button className='game__1__body bnt_2'onClick={next}>Skip it</button>
 						</>

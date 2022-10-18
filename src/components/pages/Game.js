@@ -65,7 +65,6 @@ function Game() {
 			if (!libraryTmp.includes(word)) libraryTmp.push(word);
 		}
 		return libraryTmp;
-		
 	}
 
 	return (

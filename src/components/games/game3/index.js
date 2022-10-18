@@ -72,16 +72,19 @@ function Game3(props) {
 
 	function shuffleChars() {
 		let charsTmp = [];
+		let indexTmp = [];
 
 		while(true) {
-			if (charsTmp.length === currentWord.length) break;
 
+			if (indexTmp.length === currentWord.length) break;
 			let index = Math.floor(Math.random() * currentWord.length);
-			let char = currentWord[index];
-
-			if (!charsTmp.includes(char)) charsTmp.push(char);
+			
+			if (!indexTmp.includes(index)) {
+				indexTmp.push(index);
+				let char = currentWord[index];
+				charsTmp.push(char);
+			}
 		}
-
 		return charsTmp;
 	}
 
@@ -93,7 +96,6 @@ function Game3(props) {
 			setCurrentIndex(0);
 			return;
 		};
-
 		setCurrentIndex(currentIndexTmp);
 	}
 	
@@ -106,8 +108,9 @@ function Game3(props) {
 		if (!char) return;
 
 		resultWordCharsTmp.push(char);
-		
-		currentWordCharsTmp = currentWordCharsTmp.filter(item => item !== char);
+
+		let indexDelElem = currentWordCharsTmp.indexOf(char);
+		currentWordCharsTmp = currentWordCharsTmp.filter((item, i) => i !== indexDelElem);
 
 		setCurrentWordChars(currentWordCharsTmp);
 		setResultWordChars(resultWordCharsTmp);

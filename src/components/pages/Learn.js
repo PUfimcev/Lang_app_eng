@@ -80,5 +80,4 @@ function Learn() {
 		</div>
 	);
 }
-
 export default Learn;

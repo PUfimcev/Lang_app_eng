@@ -33,7 +33,6 @@ function Library() {
 			
 			setLibrary([...libraryTmp]);
 		});
-
 	}
 
 	function checkDublicate(word){
@@ -48,10 +47,8 @@ function Library() {
 		libraryTmp = libraryTmp.filter((elem, index) => wordIndex !== index);
 
 		setLibrary([...libraryTmp]);
-
 		if (libraryTmp.length === 0) localStorage.removeItem('library');
 		// clearStorage();
-
 	}
 	
 	function get(){
@@ -71,12 +68,11 @@ function Library() {
 		<div className="page">
 			<div className="library">
 				<h1 className="library__title">Add new <span>Word</span></h1>
-
 				<div className="library__form">
-					<input ref={inputRef} />
+					<input ref={inputRef} onKeyPress={(event)=>{
+						if (event.key === 'Enter') add();}}/>
 					<button onClick={add}>+</button>
 				</div>
-
 				<div className="library__list">
 					<div className="library__row head">
 						<div className="library__col">Word</div>
